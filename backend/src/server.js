@@ -3,12 +3,14 @@ import "dotenv/config";
 import authRoutes from "./routes/authRoutes.js";
 import { connectDB } from "./lib/db.js";
 
-const app = express()
+const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use("/cyber/book",authRoutes)
+app.use(express.json());
+
+app.use("/cyber/book",authRoutes);
 
 app.listen(PORT, () => {
     console.log(`essa aplicação esta rodando em port:${PORT}` )
     connectDB();
-})
+});
