@@ -41,6 +41,8 @@ router.post("/registrar", async (req, res) => {
        const user = new User({
         username,email,password,profileImage})
 
+        await user.save();
+
         const token = generateToken(user._id)
 
         res.status(201).json({
