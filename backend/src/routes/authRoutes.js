@@ -62,7 +62,33 @@ router.post("/registrar", async (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
-    res.send("login")
+    try {
+        const {email,password} = req.body;
+        if(!email || !password) { return res.status(500).json({message : "preencha todos os campos para efeturar o login"}) }
+
+        const user = await User.findOne({email})
+
+        if(!user){return res.status(500).json({message : "esse usuario não existe"})}
+
+        const isPasswordCorrect = await user.comparePassword(password);
+
+        if(!isPasswordCorrect){return res.status(500).json({message : "credenciais invalidas"})}
+
+        const token = generateToken(user._id)
+
+        res.status(201).json({
+            token,
+            user:{
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                profileImage: user.profileImage
+            }
+        })
+    } catch (error) {
+        console.log("Error em logar usuario!", error)
+        res.status(500).json({message:"erro interno!"})
+    }
 })
 
 export default router;

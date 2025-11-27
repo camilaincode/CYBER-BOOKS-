@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         default:""
     }
-});
+}, {timestamps: true});
 
 userSchema.pre("save", async function() {
     if(!this.isModified("password")) return; //para não codificar a senha novamente
@@ -29,6 +29,10 @@ userSchema.pre("save", async function() {
     this.password = await bcrypt.hash(this.password,salt);
     
 });
+
+userSchema.methods.comparePassword = async function (userPassword) {
+    return await bcrypt.compare(userPassword,this.password)
+};
 
 const User = mongoose.model("User",userSchema);
 
