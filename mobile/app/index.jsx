@@ -1,5 +1,5 @@
-import { Image, Text, View } from "react-native";
-import { Image } from "expo-image";
+import { Text, View } from "react-native";
+import { Link } from "expo-router";
 
 export default function Index() {
   return (
@@ -10,8 +10,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>camila in code.</Text>
-      
+      <Text>menu.</Text>
+      <Link href="/(auth)/singup">Sing up</Link>
+      <Link href="/(auth)">Login</Link>
     </View>
   );
 }
